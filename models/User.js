@@ -5,7 +5,6 @@ const userSchema = mongoose.Schema({
         required: true,
         min: 4,
         max: 15,
-        unique: true
     },
     gender: {
         type: String,
@@ -15,13 +14,13 @@ const userSchema = mongoose.Schema({
         type: String,
         required: true,
         unique: true,
-        validate: {
-            validator: function (v) {
-                // return /([a-zA-Z0-9]+)([\_\.\-{1}])\@tothenew([\.])com/g.test(v);
-                return '^[A-Za-z0-9._%+-]+@' + 'tothenew.com' + '$';
-            },
-            message: "Please enter a TTN email"
-        }
+        // validate: {
+        //     validator: function (v) {
+        //         return /([a-zA-Z0-9]+)([\_\.\-{1}])\@tothenew([\.])com/g.test(v);
+        //         return '^[A-Za-z0-9._%+-]+@' + 'tothenew.com' + '$';
+        //     },
+        //     message: "Please enter a TTN email"
+        // }
     },
     password: {
         type: String,
