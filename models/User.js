@@ -26,14 +26,14 @@ const userSchema = mongoose.Schema({
         type: String,
         required: true,
     },
-    // profilePicture: {
-    //     type: String,
-    //     default: ''
-    // },
-    // coverPicture: {
-    //     type: String,
-    //     default: ''
-    // },
+    profilePicture: {
+        type: String,
+        default: ''
+    },
+    coverPicture: {
+        type: String,
+        default: ''
+    },
     followers: {
         type: Array,
         default: [],
