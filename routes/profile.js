@@ -14,8 +14,11 @@ router.get('/:id', async(req, res) => {
                 user_id: user._id,
                 name: user.name,
                 email: user.email,
-                // profile_image: user.profile_image,
-                // profile_title: user.profile_title,
+                profilePicture: user.profilePicture,
+                desc: user.desc,
+                designation: user.designation,
+                // followers: user.followers,
+                // followings: user.followings,
             }
         })
     } catch (err) {

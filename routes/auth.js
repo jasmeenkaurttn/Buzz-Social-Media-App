@@ -7,7 +7,7 @@ const mailgun = require("mailgun-js");
 const DOMAIN = 'sandbox2937e94fd4e7434bbcba182295a0b33e.mailgun.org';
 const mg = mailgun({ apiKey: '9d2bcd9f5306d50f1430213db0af5481-162d1f80-2f6104e8', domain: DOMAIN });
 const verifyToken = require('../middleware/verifyToken')
-var User = require('../models/User');
+const User = require('../models/User');
 
 // --- SignUp Route ----- 
 router.post('/signup', async (req, res) => {
@@ -78,35 +78,8 @@ router.post('/login', verifyToken, async (req, res) => {
 router.put('/forgot-password', async (req, res) => {
     const { email } = req.body;
 
-    User.findOne({ email }, (err, user) => {
-        if (err || !user) {
-            return res.status(400).json({ error: "User with this email does not exist." })
-        }
-
-        const token = jwt.sign({ _id: user._id }, process.env.RESET_PASSWORD_KEY, { expiresIn: '15m' });
-        const data = {
-            from: 'noreply@hello.com',
-            to: email,
-            subject: 'Reset Password Link',
-            html: `
-                    <h2>Please click on given link to reset your password</h2>
-                    <p>${process.env.CLIENT_URL}/reset-password/${token}</p>
-                `
-        };
-
-        return User.updateOne({ resetLink: token }, (err, success) => {
-            if (err) {
-                return res.status(400).json({ error: "reset password link error" })
-            } else {
-                mg.messages().send(data, function (error, body) {
-                    if (error) {
-                        return res.json({ error: err.message })
-                    }
-                    return res.json({ message: "Email has been sent, kindly follow the instructions" });
-                })
-            }
-        })
-    })
+    // front end se jo new pwd add hoga.. vo yaha update ho
+    User.updateOne({email: req.body.email}, {$set: {"password": "Password entered by user in FE"}})
 })
 
 
