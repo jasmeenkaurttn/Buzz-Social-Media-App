@@ -8,7 +8,7 @@ const userSchema = mongoose.Schema({
     },
     gender: {
         type: String,
-        default: "Female"
+        default: ""
     },
     email: {
         type: String,
