@@ -22,8 +22,9 @@ const { cloudinary } = require('../utils/cloudinary')
 //formdata
 router.post('/post',async(req,res)=>{
     try {
-        const fileStr = req.files.photo
-        const uploadedResponse = await cloudinary.uploader.upload(fileStr.tempFilePath,async(err,result)=>{
+        console.log(req.files);
+        const fileStr = await req.files.photo;
+        await cloudinary.uploader.upload(fileStr.tempFilePath,async(err,result)=>{
             const newPost = new Post({
                 description: req.body.description,
                 url: result.url,
@@ -38,17 +39,17 @@ router.post('/post',async(req,res)=>{
         })
         res.json({msg: 'uploaded'})
     } catch (error) {
-        console.log(error);
+        res.send(error);
     }
 })
 
 
 //get users posts
 //json
-router.get('/allPosts',async(req,res)=>{
+router.get('/allPosts/:userId',async(req,res)=>{
     try {
         const posts = await Post
-            .find({userId: req.body.userId})
+            .find({userId: req.params.userId})
             .sort({createdAt:-1})
             .select({description:1,url:1,creationDate:1,likes:1,comments:1})
             if (posts.length==0) {
@@ -56,16 +57,16 @@ router.get('/allPosts',async(req,res)=>{
         }
         res.status(200).send(posts);
     } catch (error) {
-        console.log(error);
+        res.send(error);
     } 
 })
 
 
 //posts for the feed
 //json data
-router.get('/friends',async(req,res)=>{
+router.post('/friends',async(req,res)=>{
     try {
-        const friendsList = req.body.friendsList;
+        const friendsList = req.body.friends;
         const posts = await Post
             .find({"userId": {"$in": friendsList}})
             .sort({createdAt:-1})
@@ -74,7 +75,7 @@ router.get('/friends',async(req,res)=>{
                 return res.send('No posts');
         res.status(200).send(posts);
     } catch (error) {
-        console.log(error);
+        res.send(error);
     } 
 })
 
@@ -109,7 +110,7 @@ router.put('/updatePost',async(req,res)=>{
         await post.save()
         res.send("successful")
     } catch (error) {
-        console.log(error);
+        res.send(error);
     }
 })
 
@@ -123,7 +124,7 @@ router.put('/likes',async(req,res)=>{
         await post.save()
         res.send("successful")
     } catch (error) {
-        console.log(error);
+        res.send(error);
     }
 })
 
@@ -142,7 +143,7 @@ router.put('/comment',async(req,res)=>{
         await post.save()
         res.send("successful")
     } catch (error) {
-        console.log(error);
+        res.send(error);
     }
 })
 
@@ -153,7 +154,7 @@ router.delete('/deletePost',async(req,res)=>{
         await Post.findByIdAndRemove(req.body.id)
         res.send("deleted")
     } catch (error) {
-        console.log(error);
+        res.send(error);
     }
 })
 
