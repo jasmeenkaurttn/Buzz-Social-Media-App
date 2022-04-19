@@ -22,7 +22,6 @@ const { cloudinary } = require('../utils/cloudinary')
 //formdata
 router.post('/post',async(req,res)=>{
     try {
-        console.log(req.files);
         const fileStr = await req.files.photo;
         await cloudinary.uploader.upload(fileStr.tempFilePath,async(err,result)=>{
             const newPost = new Post({

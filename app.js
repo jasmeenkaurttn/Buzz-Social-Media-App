@@ -8,11 +8,15 @@ const authRoute = require('./routes/auth');
 const userRoute = require('./routes/users');
 const profileRoute = require('./routes/profile');
 const feedRoute = require('./routes/feed');
+const fileUpload = require('express-fileupload')
 const app = express(); // this represents our application
 
 app.use(cors())
 app.use(express.json()); // enable parsing up in the json objects in the body of the request
 app.use(express.urlencoded({ extended: true })); // parses incoming requests with url encode payloads.  --> key=value&key=value
+app.use(fileUpload({
+    useTempFiles:true
+}))
 app.set('view engine', 'ejs');
 app.use(logger);
 app.use(authentication);
