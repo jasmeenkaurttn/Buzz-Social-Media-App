@@ -1,5 +1,6 @@
 const User = require('../models/User');
 const router = require('express').Router();
+const { cloudinary } = require('../utils/cloudinary')
 
 router.get('/:id', async(req, res) => {
     try {
@@ -26,4 +27,18 @@ router.get('/:id', async(req, res) => {
     }
 });
 
+router.post('/profilePhoto',async(req,res)=>{
+    const user = await User.findOne({_id: req.body.id});
+    if(!user) {
+        return res.status(404).json('User not found');
+    }
+    const fileStr = req.files.photo
+    let imgUrl='';
+    await cloudinary.uploader.upload(fileStr.tempFilePath,async(err,result)=>{
+        user.profilePicture = result.url; 
+        imgUrl = result.url;
+    })
+    await user.save()
+    res.send(imgUrl)
+})
 module.exports = router;

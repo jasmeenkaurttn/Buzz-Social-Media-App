@@ -12,7 +12,7 @@ router.post('/signup', async (req, res) => {
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(req.body.password, salt)
         const newUser = new User({
-            name: req.body.name,
+            firstName: req.body.name,
             // gender: req.body.gender,
             // profilePicture: req.body.profilePicture,
             // coverPicture: req.body.coverPicture,
@@ -57,11 +57,13 @@ router.post('/login', async (req, res) => {
         //     { expiresIn: "1h" }
         // );
 
-        res.status(200).json({
-            message: "User Authenticated",
-            // token: token,
-            user_id: user._id
-        });
+        res.send(user)
+
+        // res.status(200).json({
+        //     message: "User Authenticated",
+        //     // token: token,
+        //     user_id: user._id
+        // });
 
         // res.status(404).json({
         //     message: "User not authenticated"

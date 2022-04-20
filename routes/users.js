@@ -82,6 +82,8 @@ router.get('/suggestions/:userId',(req,res)=>{
 })
 
 // follow a user
+//parmas: user's Id
+//body: followers or frineds Id
 router.put('/:id/follow', async (req, res) => {
     if (req.body.userId !== req.params.id) {
         try {
