@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 const Joi = require('joi');
 const Post = require('../models/Post')
-var ObjectId = require('mongodb').ObjectId;
 const { cloudinary } = require('../utils/cloudinary')
 
 // router.post('/post',async(req,res)=>{

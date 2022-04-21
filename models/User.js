@@ -1,10 +1,20 @@
 var mongoose = require('mongoose');
 const userSchema = mongoose.Schema({
-    name: {
+    // name: {
+    //     type: String,
+    //     required: true,
+    //     min: 4,
+    //     max: 15,
+    // },
+    firstName: {
         type: String,
         required: true,
         min: 4,
         max: 15,
+    },
+    lastName:{
+        type: String,
+        default: ""
     },
     gender: {
         type: String,
@@ -14,13 +24,6 @@ const userSchema = mongoose.Schema({
         type: String,
         required: true,
         unique: true,
-        // validate: {
-        //     validator: function (v) {
-        //         return /([a-zA-Z0-9]+)([\_\.\-{1}])\@tothenew([\.])com/g.test(v);
-        //         return '^[A-Za-z0-9._%+-]+@' + 'tothenew.com' + '$';
-        //     },
-        //     message: "Please enter a TTN email"
-        // }
     },
     password: {
         type: String,
@@ -28,7 +31,7 @@ const userSchema = mongoose.Schema({
     },
     profilePicture: {
         type: String,
-        default: ''
+        default: 'https://res.cloudinary.com/di4mjqigh/image/upload/v1650441396/blank-profile-picture_oof4j6.png'
     },
     coverPicture: {
         type: String,
@@ -56,16 +59,21 @@ const userSchema = mongoose.Schema({
         max: 15,
         default: "",
     },
-    phone: {
-        type: Number,
-        unique: true,
-        min: 10,
+    myWebsite: {
+        type: String,
+        max: 15,
+        default: "",
     },
-    DOB: {
+    birthday: {
         type: Date,
-        default: new Date(),
+        // default: new Date(),
     },
     city: {
+        type: String,
+        max: 50,
+        default: "",
+    },
+    stateAddress: {
         type: String,
         max: 50,
         default: "",
@@ -75,8 +83,9 @@ const userSchema = mongoose.Schema({
         max: 50,
         default: "",
     },
-    zip: {
+    pinCode: {
         type: Number,
+        default:0
     }
     // for reset password
     // resetLink: {
