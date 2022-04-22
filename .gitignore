@@ -105,3 +105,8 @@ dist
 
 #Vscode file
 .vscode/
+
+#Misc file
+utils/
+tmp/
+

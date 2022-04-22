@@ -25,6 +25,7 @@ router.post('/post',async(req,res)=>{
         await cloudinary.uploader.upload(fileStr.tempFilePath,async(err,result)=>{
             const newPost = new Post({
                 description: req.body.description,
+                name: req.body.firstName,
                 url: result.url,
                 publicId:result.public_id,
                 creationDate: new Date(),
