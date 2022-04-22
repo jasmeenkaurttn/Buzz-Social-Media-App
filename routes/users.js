@@ -3,9 +3,35 @@ const router = require('express').Router();
 const bcrypt = require('bcrypt');
 
 
+//get all users
+// router.get('/getAll',async(req,res)=>{
+//     try {
+//         const users = await User
+//             .find()
+//             .select({firstName:1,lastName:1,profilePicture:1})
+//         res.send(users);
+//     } catch (error) {
+//         res.send(error);
+//     }
+// })
+
+//get friend suggestions
+router.post('/suggestions/:id',async(req,res)=>{
+    try {
+        const users = await User
+             .find()
+             .and([{"_id": {"$nin": req.body.friends}}, {"_id": {"$ne": req.params.id}}])
+            // .find()
+            .select({firstName:1,lastName:1,profilePicture:1})
+        res.send(users);
+    } catch (error) {
+        res.send(error);
+    }
+})
+
 // update a user
 router.put('/:id', async (req, res) => {
-    if (req.body.userId === req.params.id || req.body.isAdmin) {
+    if (req.body.userId === req.params.id) {
         if (req.body.password) {
             try {
                 const salt = await bcrypt.genSalt(10);
@@ -20,7 +46,7 @@ router.put('/:id', async (req, res) => {
             const user = await User.findByIdAndUpdate(req.params.id, {
                 $set: req.body,
             });
-            res.status(200).json("Account has been updated");
+            res.status(200).json({message:"Account has been updated"});
         } catch (error) {
             return res.status(500).json(err);
         }
@@ -28,7 +54,6 @@ router.put('/:id', async (req, res) => {
         return res.status(403).json('You can only update your account');
     }
 });
-
 
 // delete a user
 router.delete('/:id', async (req, res) => {
@@ -67,8 +92,8 @@ router.get('/friends/:userId', async (req, res) => {
 
         let friendList = [];
         friends.map(friend => {
-            const { _id, name, profilePicture } = friend;
-            friendList.push({ _id, name, profilePicture });
+            const { _id, firstName, profilePicture, lastName } = friend;
+            friendList.push({ _id, firstName, lastName, profilePicture });
         });
         res.status(200).json(friendList)
     } catch (err) {
@@ -76,14 +101,9 @@ router.get('/friends/:userId', async (req, res) => {
     }
 })
 
-//get friend suggestions
-router.get('/suggestions/:userId',(req,res)=>{
-    
-})
-
 // follow a user
-//parmas: user's Id
-//body: followers or frineds Id
+//parmas:  followers or friends Id
+//body: logged In user's Id
 router.put('/:id/follow', async (req, res) => {
     if (req.body.userId !== req.params.id) {
         try {
@@ -124,6 +144,7 @@ router.put('/:id/unfollow', async (req, res) => {
         res.status(403).json("You can't unfollow yourself");
     }
 })
+
 
 
 module.exports = router;

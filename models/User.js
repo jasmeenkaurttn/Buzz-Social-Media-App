@@ -66,7 +66,7 @@ const userSchema = mongoose.Schema({
     },
     birthday: {
         type: Date,
-        // default: new Date(),
+        default: new Date(),
     },
     city: {
         type: String,

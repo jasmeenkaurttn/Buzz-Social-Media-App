@@ -2,6 +2,26 @@ const User = require('../models/User');
 const router = require('express').Router();
 const { cloudinary } = require('../utils/cloudinary')
 
+router.post('/checkEmail',async(req,res)=>{
+    try {
+        const user = await User.findOne({email: req.body.email});
+        if(!user) {
+            res.status(200).json({
+                message: "no",
+            })
+        }else{
+            res.status(200).json({
+                message: "exists",
+                data: user
+            })
+        }
+        
+    } catch (error) {
+        res.send(error)
+    }
+})
+
+
 router.get('/:id', async(req, res) => {
     try {
         const user = await User.findOne({_id: req.params.id});
